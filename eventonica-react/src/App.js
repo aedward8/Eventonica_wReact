@@ -2,39 +2,44 @@ import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-let allEvents = [
-  {
-    event_id: 1,
-    name: "Birthday",
-    date: "2021-03-05",
-    location: "Downtown",
-    category: "fun",
-  },
-  {
-    event_id: 2,
-    name: "Puppy Adoption Fair",
-    date: "2021-02-01",
-    location: "Golden Gate Park",
-    category: "fun",
-  },
-  {
-    event_id: 3,
-    name: "Study-A-Thon",
-    date: "2021-02-21",
-    location: "Virtual",
-    category: "Learning",
-  },
-];
-
-//import
-// getEvents = () => {
-//   return allEvents
-// }
+// let allEvents = [
+//   {
+//     event_id: 1,
+//     name: "Birthday",
+//     date: "2021-03-05",
+//     location: "Downtown",
+//     category: "fun",
+//   },
+//   {
+//     event_id: 2,
+//     name: "Puppy Adoption Fair",
+//     date: "2021-02-01",
+//     location: "Golden Gate Park",
+//     category: "fun",
+//   },
+//   {
+//     event_id: 3,
+//     name: "Study-A-Thon",
+//     date: "2021-02-21",
+//     location: "Virtual",
+//     category: "Learning",
+//   },
+// ];
 
 function EventSection() {
   //fetch all event data
-  let eventsInitial = allEvents;
-  const [eventList, setEventList] = useState(eventsInitial);
+
+  const [eventList, setEventList] = useState([]);
+
+  let allEvents = () => {
+    fetch("http://localhost:9000/events")
+      .then((res) => res.json())
+      .then((res) => setEventList(res));
+  };
+  React.useEffect(() => {
+    // Anything in here is fired on component mount.
+    allEvents();
+  }, []);
 
   return (
     <div>
@@ -56,15 +61,15 @@ function EventList(props) {
   };
 
   return (
-    <ul>
+    <>
       {props.a.map((event) => {
         return (
-          <li key={event.event_id}>
+          <div key={event.event_id}>
             <Event event={event} deleteEvent={deleteEvent} />
-          </li>
+          </div>
         );
       })}
-    </ul>
+    </>
   );
 }
 
@@ -165,21 +170,15 @@ function EventForm() {
 function App() {
   const [apiResponse, setApiResponse] = React.useState("");
 
-  // let callAPI = () => {
-  //   fetch("http://localhost:9000/testAPI")
-  //     .then((res) => res.text())
-  //     .then((res) => setApiResponse(res));
-  // };
-
-  let allEvents = () => {
-    fetch("http://localhost:9000/events")
+  let callAPI = () => {
+    fetch("http://localhost:9000/testAPI")
       .then((res) => res.text())
       .then((res) => setApiResponse(res));
   };
+
   React.useEffect(() => {
     // Anything in here is fired on component mount.
-    //callAPI();
-    allEvents();
+    callAPI();
   }, []);
 
   return (
