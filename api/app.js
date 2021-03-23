@@ -7,7 +7,7 @@ var cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var testAPIRouter = require("./routes/testAPI");
+var testAPIRouter = require("./routes/testAPI"); //
 
 var app = express();
 //Express meets DB Client (pgp)
@@ -24,6 +24,7 @@ app.set("view engine", "jade");
 app.use(cors());
 app.use(logger("dev"));
 // data from client side - req.body
+// Express's version of body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
